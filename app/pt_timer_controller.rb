@@ -18,11 +18,8 @@ class PtTimerController < UITableViewController
   end
 
   def addExercise
-    alert = UIAlertView.alloc.initWithTitle "", message: "Please enter the exercise name:", delegate:self, cancelButtonTitle: "Create", otherButtonTitles:nil
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput
-    alertTextField = alert.textFieldAtIndex 0
-    alertTextField.placeholder = "Enter Exercise Name"
-    alert.show
+    controller = UIApplication.sharedApplication.delegate.exercise_controller
+    navigationController.pushViewController(controller, animated:true)
   end
 
   def tableView(tableView, numberOfRowsInSection:section)

@@ -13,4 +13,8 @@ class AppDelegate
     @window.makeKeyAndVisible
     true
   end
+
+  def exercise_controller
+    @exercise_controller ||= ExerciseController.alloc.init
+  end
 end
