@@ -1,40 +1,82 @@
 class PtTimerController < UITableViewController
   def viewDidLoad
-    margin = 20
-
-    @state = UILabel.new
-    @state.font = UIFont.systemFontOfSize(30)
-    @state.text = 'Create Exercise'
-    @state.textAlignment = UITextAlignmentCenter
-    @state.textColor = UIColor.whiteColor
-    @state.backgroundColor = UIColor.clearColor
-    @state.frame = [[margin, 200], [view.frame.size.width - margin * 2, 40]]
-    view.addSubview(@state)
-
-    @action = UIButton.buttonWithType(UIButtonTypeRoundedRect)
-    @action.setTitle('Start', forState:UIControlStateNormal)
-    @action.setTitle('Stop', forState:UIControlStateSelected)
-    @action.addTarget(self, action:'createExercise', forControlEvents:UIControlEventTouchUpInside)
-    @action.frame = [[margin, 260], [view.frame.size.width - margin * 2, 40]]
-    view.addSubview(@action)
+    view.dataSource = view.delegate = self
   end
 
-  def createExercise
-    if @timer
-      @timer.invalidate
-      @timer = nil
-    else
-      @duration = 0
-      @timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target:self, selector:'timerFired', userInfo:nil, repeats:true)
+  def viewWillAppear(animated)
+    navigationItem.title = 'Exercises'
+    navigationItem.leftBarButtonItem = editButtonItem
+    navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemAdd, target:self, action:'addExercise')
+
+    # The Add button is disabled by default, and will be enabled once the location manager is ready to return the current location.
+    navigationItem.rightBarButtonItem.enabled = true
+    # @exercise_manager ||= CLLocationManager.alloc.init.tap do |lm|
+    #   lm.desiredAccuracy = KCLLocationAccuracyNearestTenMeters
+    #   lm.startUpdatingLocation
+    #   lm.delegate = self
+    # end
+  end
+
+  def addExercise
+    alert = UIAlertView.alloc.initWithTitle "", message: "Please enter the exercise name:", delegate:self, cancelButtonTitle: "Create", otherButtonTitles:nil
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput
+    alertTextField = alert.textFieldAtIndex 0
+    alertTextField.keyboardType = UIKeyboardTypeNumberPad
+    alertTextField.placeholder = "Enter Exercise Name"
+    alert.show
+  end
+
+  def tableView(tableView, numberOfRowsInSection:section)
+    ExercisesStore.shared.exercises.size
+  end
+
+  CellID = 'CellIdentifier'
+  def tableView(tableView, cellForRowAtIndexPath:indexPath)
+    cell = tableView.dequeueReusableCellWithIdentifier(CellID) || UITableViewCell.alloc.initWithStyle(UITableViewCellStyleSubtitle, reuseIdentifier:CellID)
+    exercise = ExercisesStore.shared.exercises[indexPath.row]
+
+    @date_formatter ||= NSDateFormatter.alloc.init.tap do |df|
+      df.timeStyle = NSDateFormatterMediumStyle
+      df.dateStyle = NSDateFormatterMediumStyle
     end
-    @action.selected = !@action.selected?
+    cell.textLabel.text = @date_formatter.stringFromDate(exercise.creation_date)
+    cell.detailTextLabel.text = exercise.name
+    cell
   end
+
+  def tableView(tableView, editingStyleForRowAtIndexPath:indexPath)
+    UITableViewCellEditingStyleDelete
+  end
+
+  def tableView(tableView, commitEditingStyle:editingStyle, forRowAtIndexPath:indexPath)
+    exercise = ExercisesStore.shared.exercises[indexPath.row]
+    ExercisesStore.shared.remove_exercise(exercise)
+    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation:UITableViewRowAnimationFade)
+  end
+
+  # def exerciseManager(manager, didUpdateToExercise:newExercise, fromExercise:oldExercise)
+  #   navigationItem.rightBarButtonItem.enabled = true
+  # end
+  #
+  # def exerciseManager(manager, didFailWithError:error)
+  #   navigationItem.rightBarButtonItem.enabled = false
+  # end
 
   def timerFired
     @state.text = "%.1f" % (@duration += 0.1)
   end
 
-  def tableView(tableView, numberOfRowsInSection:section)
-    ExercisesStore.shared.exercises.size
+  def alertView(alertView, clickedButtonAtIndex:buttonIndex)
+    entered_text = alertView.textFieldAtIndex(0).text
+    puts "Entered: #{entered_text}"
+
+    return if entered_text.length < 1
+
+    ExercisesStore.shared.add_exercise do |exercise|
+      # We set up our new Exercise object here.
+      exercise.creation_date = NSDate.date
+      exercise.name = entered_text
+    end
+    view.reloadData
   end
 end
