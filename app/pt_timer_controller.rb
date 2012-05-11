@@ -21,7 +21,6 @@ class PtTimerController < UITableViewController
     alert = UIAlertView.alloc.initWithTitle "", message: "Please enter the exercise name:", delegate:self, cancelButtonTitle: "Create", otherButtonTitles:nil
     alert.alertViewStyle = UIAlertViewStylePlainTextInput
     alertTextField = alert.textFieldAtIndex 0
-    alertTextField.keyboardType = UIKeyboardTypeNumberPad
     alertTextField.placeholder = "Enter Exercise Name"
     alert.show
   end
