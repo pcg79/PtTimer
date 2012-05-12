@@ -6,7 +6,9 @@ class Exercise < NSManagedObject
       entity.managedObjectClassName = 'Exercise'
       entity.properties =
         { 'creation_date' => NSDateAttributeType,
-          'name'          => NSStringAttributeType }.each.map do |name, type|
+          'name'          => NSStringAttributeType,
+          'timer_one'     => NSInteger16AttributeType,
+          'timer_two'     => NSInteger16AttributeType }.each.map do |name, type|
             property = NSAttributeDescription.alloc.init
             property.name = name
             property.attributeType = type
