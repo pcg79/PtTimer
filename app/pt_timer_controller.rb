@@ -22,15 +22,19 @@ class PtTimerController < UITableViewController
 
   CellID = 'CellIdentifier'
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
-    cell = tableView.dequeueReusableCellWithIdentifier(CellID) || UITableViewCell.alloc.initWithStyle(UITableViewCellStyleSubtitle, reuseIdentifier:CellID)
-    exercise = ExercisesStore.shared.exercises[indexPath.row]
-
     @date_formatter ||= NSDateFormatter.alloc.init.tap do |df|
       df.timeStyle = NSDateFormatterMediumStyle
       df.dateStyle = NSDateFormatterMediumStyle
     end
+
+    cell = tableView.dequeueReusableCellWithIdentifier(CellID) || begin
+      cell = UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:CellID)
+      cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton
+      cell
+     end
+    exercise = ExercisesStore.shared.exercises[indexPath.row]
+
     cell.textLabel.text = exercise.name
-    cell.detailTextLabel.text = "Timer 1: #{exercise.timer_one}s, Timer 2: #{exercise.timer_two}s"
     cell
   end
 
@@ -42,5 +46,12 @@ class PtTimerController < UITableViewController
     exercise = ExercisesStore.shared.exercises[indexPath.row]
     ExercisesStore.shared.remove_exercise(exercise)
     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation:UITableViewRowAnimationFade)
+  end
+
+  def tableView(tableView, accessoryButtonTappedForRowWithIndexPath:indexPath)
+    exercise = ExercisesStore.shared.exercises[indexPath.row]
+    controller = UIApplication.sharedApplication.delegate.timer_controller
+    navigationController.pushViewController(controller, animated:true)
+    controller.showExercise(exercise)
   end
 end

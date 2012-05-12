@@ -12,4 +12,8 @@ class AppDelegate
   def exercise_controller
     @exercise_controller ||= ExerciseController.alloc.init
   end
+
+  def timer_controller
+    @timer_controller ||= TimerController.alloc.init
+  end
 end
