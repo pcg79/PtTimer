@@ -1,0 +1,17 @@
+My first iOS app written with RubyMotion.
+
+Very simple double timer for helping me do my PT exercises and stretches (from this point referred to as just 'exercises').
+
+PT exercises usually require you to hold some position for some length of time.  Because I'm bad at counting while in pain I tried to use a simple timer to help me count.  But that required I manually stop and start it.  So I set the timer to repeat.  But that didn't give me enough time to rest between reps.  So I added the rest amount to my timer.  But then I had to watch the timer in order to know when I should stop since I could no longer rely on any sort of "done" notification (a ding usually).  So ideally I'd want two timers.  One to 'ding' when I'm done holding the exercise, and one to give me a simple delay before starting the timer again.  Thus this app was born.
+
+TODO:
+
+* Add sound notifications when the timers finish.
+* Refactor the timers so I only use one.
+* Replace Numeric Pad with minute/second picker.
+
+Stretch goals:
+
+* Splash screen
+* Customizable sound notifications
+* Ability to create an arbitrary number of timers
