@@ -6,37 +6,9 @@ class ExerciseController < UIViewController
 
   # TODO: Replace w/ nib, I guess.  Or just make it prettier in general.
   def viewDidLoad
-    @name = UITextField.new
-    @name.font = UIFont.systemFontOfSize(20)
-    @name.placeholder = 'Enter exercise name'
-    @name.textAlignment = UITextAlignmentCenter
-    @name.textColor = UIColor.blackColor
-    @name.backgroundColor = UIColor.grayColor
-    @name.borderStyle = UITextBorderStyleRoundedRect
-    @name.frame = [[10, 20], [300, 30]]
-    view.addSubview(@name)
-
-    @timer1 = UITextField.new
-    @timer1.font = UIFont.systemFontOfSize(20)
-    @timer1.placeholder = 'Enter hold time'
-    @timer1.textAlignment = UITextAlignmentCenter
-    @timer1.textColor = UIColor.blackColor
-    @timer1.backgroundColor = UIColor.grayColor
-    @timer1.borderStyle = UITextBorderStyleRoundedRect
-    @timer1.keyboardType = UIKeyboardTypeNumberPad
-    @timer1.frame = [[10, 60], [300, 30]]
-    view.addSubview(@timer1)
-
-    @timer2 = UITextField.new
-    @timer2.font = UIFont.systemFontOfSize(20)
-    @timer2.placeholder = 'Enter reset time'
-    @timer2.textAlignment = UITextAlignmentCenter
-    @timer2.textColor = UIColor.blackColor
-    @timer2.backgroundColor = UIColor.grayColor
-    @timer2.borderStyle = UITextBorderStyleRoundedRect
-    @timer2.keyboardType = UIKeyboardTypeNumberPad
-    @timer2.frame = [[10, 100], [300, 30]]
-    view.addSubview(@timer2)
+    @name   = create_text_field(placeholder: 'Enter exercise name', frame: [[10, 20], [300, 30]])
+    @timer1 = create_text_field(placeholder: 'Ender hold time', keyboardType: UIKeyboardTypeNumberPad, frame: [[10, 60], [300, 30]])
+    @timer2 = create_text_field(placeholder: 'Ender reset time', keyboardType: UIKeyboardTypeNumberPad, frame: [[10, 100], [300, 30]])
   end
 
   def viewWillAppear(animated)
@@ -70,5 +42,21 @@ class ExerciseController < UIViewController
       exercise.timer_two = @timer2.text.to_i
     end
     navigationController.popViewControllerAnimated(true)
+  end
+
+private
+
+  def create_text_field(params)
+    text_field = UITextField.new
+    text_field.font = UIFont.systemFontOfSize(20)
+    text_field.placeholder = params[:placeholder]
+    text_field.textAlignment = UITextAlignmentCenter
+    text_field.textColor = UIColor.blackColor
+    text_field.backgroundColor = UIColor.grayColor
+    text_field.borderStyle = UITextBorderStyleRoundedRect
+    text_field.keyboardType = params[:keyboardType] if params[:keyboardType]
+    text_field.frame = params[:frame]
+    view.addSubview(text_field)
+    text_field
   end
 end

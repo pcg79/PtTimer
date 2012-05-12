@@ -7,57 +7,13 @@ class TimerController < UIViewController
   def viewDidLoad
     margin = 10
 
-    @timer1_label = UILabel.new
-    @timer1_label.font = UIFont.systemFontOfSize(30)
-    @timer1_label.text = 'Timer 1'
-    @timer1_label.textAlignment = UITextAlignmentCenter
-    @timer1_label.textColor = UIColor.blackColor
-    @timer1_label.backgroundColor = UIColor.clearColor
-    @timer1_label.frame = [[margin, 20], [300, 30]]
-    view.addSubview(@timer1_label)
+    create_label text: 'Hold for:', frame: [[margin, 20], [300, 30]]
+    create_label text: 'Start again in:', frame: [[margin, 100], [300, 30]]
+    create_label text: 'Number of Reps:', frame: [[margin, 200], [300, 30]]
 
-    @timer1_display = UILabel.new
-    @timer1_display.font = UIFont.systemFontOfSize(30)
-    @timer1_display.textAlignment = UITextAlignmentCenter
-    @timer1_display.textColor = UIColor.blackColor
-    @timer1_display.backgroundColor = UIColor.clearColor
-    @timer1_display.frame = [[margin, 60], [300, 30]]
-    view.addSubview(@timer1_display)
-
-    @timer2_label = UILabel.new
-    @timer2_label.font = UIFont.systemFontOfSize(30)
-    @timer2_label.text = 'Timer 2'
-    @timer2_label.textAlignment = UITextAlignmentCenter
-    @timer2_label.textColor = UIColor.blackColor
-    @timer2_label.backgroundColor = UIColor.clearColor
-    @timer2_label.frame = [[margin, 100], [300, 30]]
-    view.addSubview(@timer2_label)
-
-    @timer2_display = UILabel.new
-    @timer2_display.font = UIFont.systemFontOfSize(30)
-    @timer2_display.textAlignment = UITextAlignmentCenter
-    @timer2_display.textColor = UIColor.blackColor
-    @timer2_display.backgroundColor = UIColor.clearColor
-    @timer2_display.frame = [[margin, 140], [300, 30]]
-    view.addSubview(@timer2_display)
-
-    @num_reps_label = UILabel.new
-    @num_reps_label.font = UIFont.systemFontOfSize(30)
-    @num_reps_label.text = 'Number of Reps'
-    @num_reps_label.textAlignment = UITextAlignmentCenter
-    @num_reps_label.textColor = UIColor.blackColor
-    @num_reps_label.backgroundColor = UIColor.clearColor
-    @num_reps_label.frame = [[margin, 200], [300, 30]]
-    view.addSubview(@num_reps_label)
-
-    @num_reps_display = UILabel.new
-    @num_reps_display.font = UIFont.systemFontOfSize(30)
-    @num_reps_display.textAlignment = UITextAlignmentCenter
-    @num_reps_display.textColor = UIColor.blackColor
-    @num_reps_display.backgroundColor = UIColor.clearColor
-    @num_reps_display.frame = [[margin, 240], [300, 30]]
-    view.addSubview(@num_reps_display)
-
+    @timer1_display   = create_label frame: [[margin, 60], [300, 30]]
+    @timer2_display   = create_label frame: [[margin, 140], [300, 30]]
+    @num_reps_display = create_label frame: [[margin, 240], [300, 30]]
 
     @start_button = UIButton.buttonWithType(UIButtonTypeRoundedRect)
     @start_button.setTitle('Start', forState:UIControlStateNormal)
@@ -144,4 +100,19 @@ class TimerController < UIViewController
   def set_timer_display(timer_display, time)
     timer_display.text = "%.1f" % time
   end
+
+private
+
+  def create_label(params)
+    label = UILabel.new
+    label.font = UIFont.systemFontOfSize(25)
+    label.text = params[:text]
+    label.textAlignment = UITextAlignmentCenter
+    label.textColor = UIColor.blackColor
+    label.backgroundColor = UIColor.clearColor
+    label.frame = params[:frame]
+    view.addSubview(label)
+    label
+  end
+
 end
