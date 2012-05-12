@@ -7,7 +7,6 @@ PT exercises usually require you to hold some position for some length of time. 
 TODO:
 
 * Add sound notifications when the timers finish.
-* Refactor the timers so I only use one.
 * Replace Numeric Pad with minute/second picker.
 
 Stretch goals:

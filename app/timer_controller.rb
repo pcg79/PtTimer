@@ -24,84 +24,48 @@ class TimerController < UIViewController
   end
 
   def timers_started
-    if @timer1 || @timer2
-      reset_timers
+    if @timer
+      reset_timer
     else
-      @duration1 = @exercise.timer_one
-      @duration2 = @exercise.timer_two
-      start_timer_one
+      @duration = @durations[@current_timer]
+      @timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target:self, selector:'timerFired', userInfo:nil, repeats:true)
     end
     @start_button.selected = !@start_button.selected?
   end
 
   def timerFired
-    if @duration1 <= 0.1
-      reset_timer_one
-      start_timer_two
-      increment_reps
-    elsif @duration2 <= 0.1
-      reset_timer_two
-      start_timer_one
+    if @duration <= 0.1
+      reset_display(@current_timer)
+      increment_reps if @current_timer == 0
+      @current_timer = (@current_timer + 1) % @durations.size
+      @duration = @durations[@current_timer]
     end
 
-    if @timer1
-      timer_display = @timer1_display
-      duration = @duration1 -= 0.1
-    else
-      timer_display = @timer2_display
-      duration = @duration2 -= 0.1
+    if @timer
+      timer_display = @displays[@current_timer]
+      duration = @duration -= 0.1
     end
 
     set_timer_display(timer_display, duration)
   end
 
-  def start_timer_one
-    @timer1 = NSTimer.scheduledTimerWithTimeInterval(0.1, target:self, selector:'timerFired', userInfo:nil, repeats:true)
-  end
-
-  def reset_timer_one
-    @timer1.invalidate
-    @timer1 = nil
-    set_timer_display(@timer1_display, @exercise.timer_one)
-    @duration1 = @exercise.timer_one
-  end
-
-  def start_timer_two
-    @timer2 = NSTimer.scheduledTimerWithTimeInterval(0.1, target:self, selector:'timerFired', userInfo:nil, repeats:true)
-  end
-
-  def reset_timer_two
-    @timer2.invalidate
-    @timer2 = nil
-    set_timer_display(@timer2_display, @exercise.timer_two)
-    @duration2 = @exercise.timer_two
-  end
-
-  def reset_timers
-    @timer1.invalidate if @timer1
-    @timer2.invalidate if @timer2
-    @timer1 = @timer2 = nil
-  end
-
-  def increment_reps
-    @num_reps += 1
-    @num_reps_display.text = @num_reps.to_s
-  end
-
   def show_exercise(exercise)
     @exercise = exercise
+    @current_timer = 0
+    @durations = [@exercise.timer_one, @exercise.timer_two]
+    @displays  = [@timer1_display, @timer2_display]
     @num_reps = 0
     @num_reps_display.text = @num_reps.to_s
     navigationItem.title = @exercise.name
-    set_timer_display(@timer1_display, @exercise.timer_one)
-    set_timer_display(@timer2_display, @exercise.timer_two)
+    set_timer_display(@displays[0], @durations[0])
+    set_timer_display(@displays[1], @durations[1])
   end
+
+private
 
   def set_timer_display(timer_display, time)
     timer_display.text = "%.1f" % time
   end
-
-private
 
   def create_label(params)
     label = UILabel.new
@@ -115,4 +79,17 @@ private
     label
   end
 
+  def reset_display(index)
+    set_timer_display(@displays[index], @durations[index])
+  end
+
+  def reset_timer
+    @timer.invalidate
+    @timer = nil
+  end
+
+  def increment_reps
+    @num_reps += 1
+    @num_reps_display.text = @num_reps.to_s
+  end
 end
