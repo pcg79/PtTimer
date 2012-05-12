@@ -52,6 +52,6 @@ class PtTimerController < UITableViewController
     exercise = ExercisesStore.shared.exercises[indexPath.row]
     controller = UIApplication.sharedApplication.delegate.timer_controller
     navigationController.pushViewController(controller, animated:true)
-    controller.showExercise(exercise)
+    controller.show_exercise(exercise)
   end
 end
