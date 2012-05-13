@@ -23,7 +23,7 @@ reaches that counter
 
 Bugs:
 
-* It takes a couple seconds to play the first sound
+* If you go back to the exercises list while a timer is running, it continues to run.
 
 Stretch goals:
 

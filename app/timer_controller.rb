@@ -37,7 +37,7 @@ class TimerController < UIViewController
     if @duration <= 0.1
       reset_display(@current_timer)
       increment_reps if @current_timer == 0
-      play_sound(*@sounds[@current_timer].split('.'))
+      play_sound(@sound_ids[@current_timer])
       @current_timer = (@current_timer + 1) % @durations.size
       @duration = @durations[@current_timer]
     end
@@ -56,6 +56,15 @@ class TimerController < UIViewController
     @durations = [@exercise.timer_one, @exercise.timer_two]
     @displays  = [@timer1_display, @timer2_display]
     @sounds    = ['tng-doorbell.wav', 'tos-computer-02.mp3']
+
+    @sound_ids = @sounds.each.map do |file|
+      name, ext = file.split('.')
+      soundPath = NSBundle.mainBundle.pathForResource name, ofType: ext
+      sound_ptr = Pointer.new(:uint)
+      AudioServicesCreateSystemSoundID(NSURL.fileURLWithPath(soundPath), sound_ptr)
+      sound_ptr[0]
+    end
+
     @num_reps = 0
     @num_reps_display.text = @num_reps.to_s
     navigationItem.title = @exercise.name
@@ -101,11 +110,7 @@ private
     @num_reps_display.text = @num_reps.to_s
   end
 
-  def play_sound(name, ext)
-    soundPath = NSBundle.mainBundle.pathForResource name, ofType: ext
-    sound_ptr = Pointer.new(:uint)
-    AudioServicesCreateSystemSoundID(NSURL.fileURLWithPath(soundPath), sound_ptr)
-    sound_id = sound_ptr[0]
+  def play_sound(sound_id)
     AudioServicesPlaySystemSound(sound_id)
   end
 end
