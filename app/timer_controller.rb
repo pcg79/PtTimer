@@ -59,8 +59,7 @@ class TimerController < UIViewController
     @num_reps = 0
     @num_reps_display.text = @num_reps.to_s
     navigationItem.title = @exercise.name
-    set_timer_display(@displays[0], @durations[0])
-    set_timer_display(@displays[1], @durations[1])
+    reset_timer_displays
   end
 
 private
@@ -88,6 +87,13 @@ private
   def reset_timer
     @timer.invalidate
     @timer = nil
+    @current_timer = 0
+    reset_timer_displays
+  end
+
+  def reset_timer_displays
+    set_timer_display(@displays[0], @durations[0])
+    set_timer_display(@displays[1], @durations[1])
   end
 
   def increment_reps
