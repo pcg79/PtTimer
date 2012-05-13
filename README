@@ -4,9 +4,20 @@ Very simple double timer for helping me do my PT exercises and stretches (from t
 
 PT exercises usually require you to hold some position for some length of time.  Because I'm bad at counting while in pain I tried to use a simple timer to help me count.  But that required I manually stop and start it.  So I set the timer to repeat.  But that didn't give me enough time to rest between reps.  So I added the rest amount to my timer.  But then I had to watch the timer in order to know when I should stop since I could no longer rely on any sort of "done" notification (a ding usually).  So ideally I'd want two timers.  One to 'ding' when I'm done holding the exercise, and one to give me a simple delay before starting the timer again.  Thus this app was born.
 
+Usage:
+
+* Create a new Exercise giving it a name and two times.  The first (hold) time is how long you must hold the exercise.  The second (reset) time is how long it takes you to return to the start position of the exercise.
+
+For example, one exercise I have requires me to lay on my back and lift one leg straight out at about a 45 degree angle.  I must hold my leg there for 5 seconds, then slowly bring the leg down to 1" from the ground.  Then left the leg back up to 45 degrees and repeat.
+
+So for this exercise I would add a hold timer of 5 seconds and a reset timer of 10 seconds (it took some counting on my part to determine how long it takes me to 1) lower the leg to 1" from the ground and 2) bring the leg back up to 45 degrees so you may have to experiment with your own).
+
 TODO:
 
 * Replace Numeric Pad with minute/second picker.
+* Add a rep counter which will fire off another sound and stop the timers when the number of reps
+reaches that counter
+* Reset the timer controller when the user goes back to the main view
 
 Stretch goals:
 
