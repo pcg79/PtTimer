@@ -31,7 +31,7 @@ class PtTimerController < UITableViewController
       cell = UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:CellID)
       cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton
       cell
-     end
+    end
     exercise = ExercisesStore.shared.exercises[indexPath.row]
 
     cell.textLabel.text = exercise.name
