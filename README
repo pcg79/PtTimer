@@ -24,6 +24,7 @@ reaches that counter
 Bugs:
 
 * If you go back to the exercises list while a timer is running, it continues to run.
+* I'm still seeing some sound delay when I start/stop the timer a lot.
 
 Stretch goals:
 
