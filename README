@@ -14,8 +14,6 @@ So for this exercise I would add a hold timer of 5 seconds and a reset timer of 
 
 TODO:
 
-* Implement a 'reset' button which will reset the timers.
-* Allow stopping timers which, when they start again, will resume (requires having reset button)
 * Allow editing existing timers
 * Add a rep counter which will fire off another sound and stop the timers when the number of reps
 reaches that counter

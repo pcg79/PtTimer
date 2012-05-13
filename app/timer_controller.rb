@@ -15,22 +15,30 @@ class TimerController < UIViewController
     @timer2_display   = create_label frame: [[margin, 140], [300, 30]]
     @num_reps_display = create_label frame: [[margin, 240], [300, 30]]
 
-    @start_button = UIButton.buttonWithType(UIButtonTypeRoundedRect)
-    @start_button.setTitle('Start', forState:UIControlStateNormal)
-    @start_button.setTitle('Stop', forState:UIControlStateSelected)
-    @start_button.addTarget(self, action:'timers_started', forControlEvents:UIControlEventTouchUpInside)
-    @start_button.frame = [[margin, 360], [300, 40]]
-    view.addSubview(@start_button)
+    @start_button = create_button normal_state_title: 'Start', selected_state_title: 'Stop', action: 'timers_started', frame: [[margin, 360], [145, 40]]
+    @reset_button = create_button normal_state_title: 'Reset', action: 'reset_timers', frame: [[margin + 155, 360], [145, 40]]
   end
 
   def timers_started
     if @timer
-      reset_timer
+      timer_reset
     else
-      @duration = @durations[@current_timer]
+      @duration ||= @durations[@current_timer]
       @timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target:self, selector:'timerFired', userInfo:nil, repeats:true)
     end
     @start_button.selected = !@start_button.selected?
+  end
+
+  def reset_timers
+    timer_reset
+    @current_timer = 0
+    @duration = nil
+    reset_timer_displays
+  end
+
+  def timer_reset
+    @timer.invalidate if @timer
+    @timer = nil
   end
 
   def timerFired
@@ -89,15 +97,18 @@ private
     label
   end
 
-  def reset_display(index)
-    set_timer_display(@displays[index], @durations[index])
+  def create_button(params)
+    button = UIButton.buttonWithType(UIButtonTypeRoundedRect)
+    button.setTitle(params[:normal_state_title], forState:UIControlStateNormal)
+    button.setTitle(params[:selected_state_title], forState:UIControlStateSelected) if params[:selected_state_title]
+    button.addTarget(self, action: params[:action], forControlEvents:UIControlEventTouchUpInside)
+    button.frame = params[:frame]
+    view.addSubview(button)
+    button
   end
 
-  def reset_timer
-    @timer.invalidate
-    @timer = nil
-    @current_timer = 0
-    reset_timer_displays
+  def reset_display(index)
+    set_timer_display(@displays[index], @durations[index])
   end
 
   def reset_timer_displays
