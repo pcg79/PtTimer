@@ -6,9 +6,17 @@ class ExerciseController < UIViewController
 
   # TODO: Replace w/ nib, I guess.  Or just make it prettier in general.
   def viewDidLoad
-    @name   = create_text_field(placeholder: 'Enter exercise name', frame: [[10, 20], [300, 30]])
-    @timer1 = create_text_field(placeholder: 'Ender hold time', keyboardType: UIKeyboardTypeNumberPad, frame: [[10, 60], [300, 30]])
-    @timer2 = create_text_field(placeholder: 'Ender reset time', keyboardType: UIKeyboardTypeNumberPad, frame: [[10, 100], [300, 30]])
+    margin = 10
+    @picker_data = (0..60).to_a
+    @picker = UIPickerView.new
+    @picker.delegate = self
+
+    @name   = create_text_field(placeholder: 'Enter exercise name', frame: [[margin, 20], [300, 30]])
+    @timer1 = create_text_field(placeholder: 'Enter hold time', keyboardType: UIKeyboardTypeNumberPad, frame: [[margin, 60], [300, 30]])
+    @timer2 = create_text_field(placeholder: 'Enter reset time', keyboardType: UIKeyboardTypeNumberPad, frame: [[margin, 100], [300, 30]])
+
+    @timer1.setInputView(@picker)
+    @timer2.setInputView(@picker)
   end
 
   def viewWillAppear(animated)
@@ -20,6 +28,7 @@ class ExerciseController < UIViewController
 
     # TODO: Is this the best way to clear the text fields?
     @name.text = @timer1.text = @timer2.text = nil
+    @picker.selectRow(0, inComponent:0, animated: false)
   end
 
   def cancel
@@ -42,6 +51,27 @@ class ExerciseController < UIViewController
       exercise.timer_two = @timer2.text.to_i
     end
     navigationController.popViewControllerAnimated(true)
+  end
+
+  def numberOfComponentsInPickerView(pickerView)
+    1
+  end
+
+  def pickerView(pickerView, numberOfRowsInComponent:component)
+    @picker_data.size
+  end
+
+  def pickerView(pickerView, titleForRow:row, forComponent:component)
+    @picker_data[row].to_s
+  end
+
+  def pickerView(pickerView, didSelectRow:row, inComponent:component)
+    row = row.to_s
+    if @timer1.isFirstResponder
+      @timer1.text = row
+    elsif @timer2.isFirstResponder
+      @timer2.text = row
+    end
   end
 
 private
