@@ -19,6 +19,12 @@ TODO:
 reaches that counter
 * Reset the timer controller when the user goes back to the main view
 
+Bugs:
+
+* It takes a couple seconds to play the first sound
+* If you stop the timer running while the 'reset' timer is running and then you hit start again,
+the reset timer starts running, not the hold timer
+
 Stretch goals:
 
 * Splash screen
