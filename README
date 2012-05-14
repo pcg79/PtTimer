@@ -14,11 +14,13 @@ So for this exercise I would add a hold timer of 5 seconds and a reset timer of 
 
 TODO:
 
+* Implement Swipe to Delete
 * Allow editing existing timers
 * Add a rep counter which will fire off another sound and stop the timers when the number of reps
 reaches that counter
 * Reset the timer controller when the user goes back to the main view
 * Prompt user with a small error msg if they don't put in a name (or timer_one, timer_two?) on new timer
+* Only reloadData when coming back from a save call, not cancel.
 
 Bugs:
 
