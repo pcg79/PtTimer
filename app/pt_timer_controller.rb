@@ -7,7 +7,6 @@ class PtTimerController < UITableViewController
     navigationItem.title = 'Exercises'
     navigationItem.leftBarButtonItem = editButtonItem
     navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemAdd, target:self, action:'addExercise')
-    # TODO: Only reloadData when coming back from a save call, not cancel.
     view.reloadData
   end
 
@@ -22,17 +21,12 @@ class PtTimerController < UITableViewController
 
   CellID = 'CellIdentifier'
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
-    @date_formatter ||= NSDateFormatter.alloc.init.tap do |df|
-      df.timeStyle = NSDateFormatterMediumStyle
-      df.dateStyle = NSDateFormatterMediumStyle
-    end
-
     cell = tableView.dequeueReusableCellWithIdentifier(CellID) || begin
       cell = UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:CellID)
       cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton
       cell
     end
-    exercise = ExercisesStore.shared.exercises[indexPath.row]
+    exercise = get_row(indexPath.row)
 
     cell.textLabel.text = exercise.name
     cell
@@ -43,15 +37,21 @@ class PtTimerController < UITableViewController
   end
 
   def tableView(tableView, commitEditingStyle:editingStyle, forRowAtIndexPath:indexPath)
-    exercise = ExercisesStore.shared.exercises[indexPath.row]
+    exercise = get_row(indexPath.row)
     ExercisesStore.shared.remove_exercise(exercise)
     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation:UITableViewRowAnimationFade)
   end
 
   def tableView(tableView, accessoryButtonTappedForRowWithIndexPath:indexPath)
-    exercise = ExercisesStore.shared.exercises[indexPath.row]
+    exercise = get_row(indexPath.row)
     controller = UIApplication.sharedApplication.delegate.timer_controller
     navigationController.pushViewController(controller, animated:true)
     controller.show_exercise(exercise)
+  end
+
+private
+
+  def get_row(row)
+    ExercisesStore.shared.exercises[row]
   end
 end
