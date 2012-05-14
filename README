@@ -18,11 +18,16 @@ TODO:
 * Add a rep counter which will fire off another sound and stop the timers when the number of reps
 reaches that counter
 * Reset the timer controller when the user goes back to the main view
+* Prompt user with a small error msg if they don't put in a name (or timer_one, timer_two?) on new timer
 
 Bugs:
 
+* Durations aren't reset when a new exercise is clicked on
+* Going from hold time to reset time doesn't reset picker view to 0
+* Hitting reset does not reset reps
 * If you go back to the exercises list while a timer is running, it continues to run.
 * I'm still seeing some sound delay when I start/stop the timer a lot.
+* Button text change doesn't happen at the same time button backgroundColor change occurs
 
 Stretch goals:
 
