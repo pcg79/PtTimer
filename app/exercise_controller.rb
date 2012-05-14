@@ -26,7 +26,6 @@ class ExerciseController < UIViewController
 
     navigationController.setNavigationBarHidden(false, animated:true)
 
-    # TODO: Is this the best way to clear the text fields?
     @name.text = @timer1.text = @timer2.text = nil
     @picker.selectRow(0, inComponent:0, animated: false)
   end
@@ -36,12 +35,6 @@ class ExerciseController < UIViewController
   end
 
   def save
-    # TODO: Is this the best way to hide the keyboard?
-    @name.resignFirstResponder
-    @timer1.resignFirstResponder
-    @timer2.resignFirstResponder
-
-    # TODO: Prompt user with a small error msg if they don't put in a name (or timer_one, timer_two?)
     return if !@name.text || @name.text.length < 1
 
     ExercisesStore.shared.add_exercise do |exercise|
