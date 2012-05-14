@@ -15,8 +15,20 @@ class TimerController < UIViewController
     @timer2_display   = create_label frame: [[margin, 140], [300, 30]]
     @num_reps_display = create_label frame: [[margin, 240], [300, 30]]
 
-    @start_button = create_button normal_state_title: 'Start', selected_state_title: 'Stop', action: 'timers_started', frame: [[margin, 360], [145, 40]]
-    @reset_button = create_button normal_state_title: 'Reset', action: 'reset_timers', frame: [[margin + 155, 360], [145, 40]]
+    corner_radius = 8.0
+
+    @start_button = create_button normal_state_title: 'Start',
+                                  selected_state_title: 'Stop',
+                                  action: 'timers_started',
+                                  frame: [[margin, 360], [145, 40]],
+                                  backgroundColor: UIColor.greenColor,
+                                  cornerRadius: corner_radius
+
+    @reset_button = create_button normal_state_title: 'Reset',
+                                  action: 'reset_timers',
+                                  frame: [[margin + 155, 360], [145, 40]],
+                                  backgroundColor: UIColor.redColor,
+                                  cornerRadius: corner_radius
   end
 
   def timers_started
@@ -27,6 +39,7 @@ class TimerController < UIViewController
       @timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target:self, selector:'timerFired', userInfo:nil, repeats:true)
     end
     @start_button.selected = !@start_button.selected?
+    @start_button.backgroundColor = @start_button.selected? ? UIColor.redColor : UIColor.greenColor
   end
 
   def reset_timers
@@ -98,10 +111,12 @@ private
   end
 
   def create_button(params)
-    button = UIButton.buttonWithType(UIButtonTypeRoundedRect)
+    button = UIButton.new
     button.setTitle(params[:normal_state_title], forState:UIControlStateNormal)
     button.setTitle(params[:selected_state_title], forState:UIControlStateSelected) if params[:selected_state_title]
     button.addTarget(self, action: params[:action], forControlEvents:UIControlEventTouchUpInside)
+    button.backgroundColor = params[:backgroundColor] if params[:backgroundColor]
+    button.layer.cornerRadius = params[:cornerRadius] if params[:cornerRadius]
     button.frame = params[:frame]
     view.addSubview(button)
     button
