@@ -28,7 +28,6 @@ reaches that counter
 
 Bugs:
 
-* Going back and then to a new exercise resets displays but not timer count
 * Reset should reset reps.
 * On the iPad the form (and I assume timers) look terrible.  Need to be auto resized.
 * Durations aren't reset when a new exercise is clicked on

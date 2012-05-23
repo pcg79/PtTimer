@@ -47,6 +47,9 @@ class TimerController < UIViewController
     @current_timer = 0
     @duration = nil
     reset_timer_displays
+    @start_button.selected = false
+    @start_button.backgroundColor = UIColor.greenColor
+    set_reps 0
   end
 
   def timer_reset
@@ -75,6 +78,7 @@ class TimerController < UIViewController
     @exercise = exercise
     @current_timer = 0
     @durations = [@exercise.timer_one, @exercise.timer_two]
+    @duration  = @durations[0]
     @displays  = [@timer1_display, @timer2_display]
     @sounds    = ['tng-doorbell.wav', 'tos-computer-02.mp3']
 
@@ -86,8 +90,7 @@ class TimerController < UIViewController
       sound_ptr[0]
     end
 
-    @num_reps = 0
-    @num_reps_display.text = @num_reps.to_s
+    set_reps 0
     navigationItem.title = @exercise.name
     reset_timer_displays
   end
@@ -138,5 +141,10 @@ private
 
   def play_sound(sound_id)
     AudioServicesPlaySystemSound(sound_id)
+  end
+
+  def set_reps(number)
+    @num_reps = number
+    @num_reps_display.text = @num_reps.to_s
   end
 end
