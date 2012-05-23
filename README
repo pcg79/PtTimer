@@ -22,12 +22,12 @@ reaches that counter
 * Reset the timer controller when the user goes back to the main view
 * Prompt user with a small error msg if they don't put in a name (or timer_one, timer_two?) on new timer
 * Only reloadData when coming back from a save call, not cancel.
-* Countdown to start (reset timer beeps at 3,2,1)
+* Implement a countdown to start when they initially hit "Start"
+* Have the reset timer beep at 3,2,1.
 
 
 Bugs:
 
-* Hitting reset while timers are running resets and stops timer but doesn't change the state of the start button.
 * Going back and then to a new exercise resets displays but not timer count
 * Reset should reset reps.
 * On the iPad the form (and I assume timers) look terrible.  Need to be auto resized.
