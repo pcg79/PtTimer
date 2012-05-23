@@ -8,15 +8,18 @@ class ExerciseController < UIViewController
   def viewDidLoad
     margin = 10
     @picker_data = (0..60).to_a
-    @picker = UIPickerView.new
-    @picker.delegate = self
+    @picker1 = UIPickerView.new
+    @picker1.delegate = self
+
+    @picker2 = UIPickerView.new
+    @picker2.delegate = self
 
     @name   = create_text_field(placeholder: 'Enter exercise name', frame: [[margin, 20], [300, 30]])
     @timer1 = create_text_field(placeholder: 'Enter hold time', keyboardType: UIKeyboardTypeNumberPad, frame: [[margin, 60], [300, 30]])
     @timer2 = create_text_field(placeholder: 'Enter reset time', keyboardType: UIKeyboardTypeNumberPad, frame: [[margin, 100], [300, 30]])
 
-    @timer1.setInputView(@picker)
-    @timer2.setInputView(@picker)
+    @timer1.setInputView(@picker1)
+    @timer2.setInputView(@picker2)
   end
 
   def viewWillAppear(animated)
@@ -27,7 +30,8 @@ class ExerciseController < UIViewController
     navigationController.setNavigationBarHidden(false, animated:true)
 
     @name.text = @timer1.text = @timer2.text = nil
-    @picker.selectRow(0, inComponent:0, animated: false)
+    @picker1.selectRow(0, inComponent:0, animated: false)
+    @picker2.selectRow(0, inComponent:0, animated: false)
   end
 
   def cancel

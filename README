@@ -29,7 +29,6 @@ reaches that counter
 Bugs:
 
 * On the iPad the form (and I assume timers) look terrible.  Need to be auto resized.
-* Going from hold time to reset time doesn't reset picker view to 0
 * Hitting reset does not reset reps
 * If you go back to the exercises list while a timer is running, it continues to run.
 * I'm still seeing some sound delay when I start/stop the timer a lot.
